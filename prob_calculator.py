@@ -5,19 +5,40 @@ class Hat:
     def __init__(self, **kwargs):
         self.contents = []
         for key, value in kwargs.items():
-            self.contents.extend([key for i in range(value)])
+            for i in range(value):
+                self.contents.append(key)
 
-    def draw(self, num):
-        if num > len(self.contents):
+    def draw(self, num_to_draw):
+        if num_to_draw > len(self.contents):
             return self.contents
         else:
-            drawn = []
-            for i in range(num):
-                selected = random.choice(self.contents)
-                self.contents.remove(selected)
-                drawn.append(selected)
-            return drawn
+            drawn_balls = []
+            for i in range(num_to_draw):
+                selected_ball = random.choice(self.contents)
+                drawn_balls.append(selected_ball)
+                self.contents.remove(selected_ball)
+            return drawn_balls
 
 def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
-    pass
+    # How many times you got expected_balls
+    successes = 0
+
+    # Run experiments
+    for experiment in range(num_experiments):
+        # Make copy of hat and expected_balls
+        copied_hat = copy.deepcopy(hat)
+        copied_expected = copy.deepcopy(expected_balls)
+
+        # Draw
+        drawn_balls = copied_hat.draw(num_balls_drawn)
+
+        # Compare copies
+        for ball in drawn_balls:
+            if ball in copied_expected:
+                copied_expected[ball] -= 1
+        if all (value <= 0 for value in copied_expected.values()):
+            successes += 1
+        
+    probability = successes/num_experiments
+    return probability
 
