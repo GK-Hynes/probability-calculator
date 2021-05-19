@@ -25,7 +25,7 @@ def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
 
     # Run experiments
     for experiment in range(num_experiments):
-        # Make copy of hat and expected_balls
+        # Make copies of hat and expected_balls so as not to influence next experiment
         copied_hat = copy.deepcopy(hat)
         copied_expected = copy.deepcopy(expected_balls)
 
@@ -39,6 +39,5 @@ def experiment(hat, expected_balls, num_balls_drawn, num_experiments):
         if all (value <= 0 for value in copied_expected.values()):
             successes += 1
         
-    probability = successes/num_experiments
-    return probability
+    return successes/num_experiments
 
